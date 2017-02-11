@@ -21,14 +21,12 @@ class CountriesServiceSolved implements CountriesService {
     }
 
     public Observable<Long> listPopulationOfEachCountry(List<Country> countries) {
-        return Observable.fromIterable(countries).map(country -> country.population); // put your solution here
-
+        return Observable.fromIterable(countries).map(country -> country.population);
     }
 
     @Override
     public Observable<String> listNameOfEachCountry(List<Country> countries) {
-        return Observable.fromIterable(countries).map(country -> country.name); // put your solution here
-
+        return Observable.fromIterable(countries).map(country -> country.name);
     }
 
     @Override
@@ -55,20 +53,16 @@ class CountriesServiceSolved implements CountriesService {
 
     @Override
     public Observable<String> getCurrencyUsdIfNotFound(String countryName, List<Country> countries) {
-        return Observable.fromIterable(countries).filter(country -> country.getName().equals(countryName)).map(Country::getCurrency);
+        return Observable.fromIterable(countries).filter(country -> country.getName().equals(countryName)).map(Country::getCurrency).defaultIfEmpty("USD");
     }
 
     @Override
     public Observable<Long> sumPopulationOfCountries(List<Country> countries) {
-        return Observable.fromIterable(countries).map(Country::getPopulation).reduce((seed, value) -> {
-            //System.out.println("Num popu counter"+seed);
-            //System.out.println("Num popu value"+value);
-            return (seed + value);
-        }).toObservable();
+        return Observable.fromIterable(countries).map(Country::getPopulation).reduce((seed, value) -> (seed + value)).toObservable();
     }
 
     @Override
     public Single<Map<String, Long>> mapCountriesToNamePopulation(List<Country> countries) {
-        return null; // put your solution here
+        return Observable.fromIterable(countries).toMap(country -> country.name, Country::getPopulation);
     }
 }
